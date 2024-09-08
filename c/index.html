@@ -150,19 +150,30 @@
     });
 
     // Check if the device is an iPhone and show the rotate instruction for portrait mode
-    function checkOrientation() {
-        if (isIphone) {
-            if (window.innerWidth < window.innerHeight) {  // In portrait mode
-                rotateInstruction.style.display = 'block';
-                videoContainer.style.display = 'none';
-            } else {  // In landscape mode
-                rotateInstruction.style.display = 'none';
-                if (!revealButton.style.display) {
-                    videoContainer.style.display = 'block';  // Show video if button has been clicked
-                }
+function checkOrientation() {
+    if (isIphone) {
+        if (window.innerWidth < window.innerHeight) {  // In portrait mode
+            rotateInstruction.style.display = 'block';
+            videoContainer.style.display = 'none';
+        } else {  // In landscape mode
+            rotateInstruction.style.display = 'none';
+            videoContainer.style.display = 'block';  // Automatically show video
+            videoContainer.style.opacity = 1;  // Ensure opacity is set to 1
+            
+            // Automatically request fullscreen when rotated
+            if (videoIframe.requestFullscreen) {
+                videoIframe.requestFullscreen();
+            } else if (videoIframe.mozRequestFullScreen) { // Firefox
+                videoIframe.mozRequestFullScreen();
+            } else if (videoIframe.webkitRequestFullscreen) { // Chrome, Safari, Opera
+                videoIframe.webkitRequestFullscreen();
+            } else if (videoIframe.msRequestFullscreen) { // IE/Edge
+                videoIframe.msRequestFullscreen();
             }
         }
     }
+}
+
 
     // Call checkOrientation on load and on orientation change
     window.addEventListener('resize', checkOrientation);
