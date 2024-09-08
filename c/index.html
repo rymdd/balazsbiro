@@ -150,8 +150,21 @@
     });
 
     // Check if the device is an iPhone and show the rotate instruction for portrait mode
+const isDesktop = !/Mobi|Android|iPhone|iPad|Windows Phone|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+window.onload = function() {
+    if (!isDesktop) {
+        // If not desktop (i.e., mobile device), hide the button and show the video if in landscape mode
+        revealButton.style.display = 'none';
+        checkOrientation();
+    } else {
+        // If it is a desktop, ensure the button is visible
+        revealButton.style.display = 'block';
+    }
+};
+
 function checkOrientation() {
-    if (isIphone) {
+    if (!isDesktop) {
         if (window.innerWidth < window.innerHeight) {  // In portrait mode
             rotateInstruction.style.display = 'block';
             videoContainer.style.display = 'none';
